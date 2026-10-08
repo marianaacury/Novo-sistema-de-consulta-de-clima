@@ -96,126 +96,248 @@ Depois, a chave deve ser configurada no código:
 ```javascript
 const OPENWEATHER_API_KEY = "SUA_CHAVE_AQUI";
 ```
+⚠️ **Importante**
 
-🌐 OpenWeatherMap
-A aplicação utiliza a API do OpenWeatherMap para consultar os dados meteorológicos.
-É necessário possuir uma API Key para realizar as consultas.
-No código, localize:
-const OPENWEATHER_API_KEY =
-  "Colar chave aqui";
-Substitua "Colar chave aqui" pela sua chave da OpenWeatherMap.
-⚠️ Importante
 Não publique sua API Key real no GitHub.
+
 Para projetos públicos, recomenda-se utilizar uma variável de ambiente ou outra forma de proteção da chave.
+
 Caso uma chave seja publicada acidentalmente, ela deve ser substituída ou revogada no serviço correspondente.
 
-📡 Comunicação MQTT
-O projeto utiliza o protocolo MQTT para realizar a comunicação entre a aplicação Web e outros dispositivos conectados ao mesmo broker.
+---
+
+# 📡 Comunicação MQTT
+
+O projeto utiliza o protocolo **MQTT** para realizar a comunicação entre a aplicação Web e outros dispositivos conectados ao mesmo broker.
+
 O broker utilizado é o:
+
+```text
 broker.hivemq.com
+```
+
 A comunicação pelo WebSocket utiliza:
+
+```text
 ws://broker.hivemq.com:8000/mqtt
+```
+
 Configuração utilizada no projeto:
+
+```javascript
 const MQTT_BROKER =
   "ws://broker.hivemq.com:8000/mqtt";
+```
 
-📋 Tópicos MQTT
+---
+
+# 📋 Tópicos MQTT
+
 O sistema trabalha com os seguintes tópicos:
-Tópico
-Função
-esp32/clima/temperatura
-Publicação da temperatura
-esp32/clima/umidade
-Publicação da umidade
-esp32/clima/cidadeAtual
-Publicação da cidade consultada
-esp32/clima/cidade
-Envio da cidade selecionada
 
-Ao realizar uma consulta, a aplicação publica a temperatura, a umidade e a cidade atual no broker MQTT.
-Por exemplo:
+| Tópico | Função |
+|---|---|
+| `esp32/clima/temperatura` | Publicação da temperatura |
+| `esp32/clima/umidade` | Publicação da umidade |
+| `esp32/clima/cidadeAtual` | Publicação da cidade consultada |
+| `esp32/clima/cidade` | Envio da cidade selecionada |
+
+Ao realizar uma consulta, a aplicação publica a **temperatura, a umidade e a cidade atual** no broker MQTT.
+
+### Exemplo
+
+O tópico:
+
+```text
 esp32/clima/temperatura
+```
+
 Pode receber:
+
+```text
 24.5
-Enquanto:
-esp32/clima/umidade
-Pode receber:
-65
+```
 
-🌦️ Dados meteorológicos
-A aplicação consulta diferentes informações fornecidas pela API.
-Temperatura
+Enquanto o tópico:
+
+```text
+esp32/clima/umidade
+```
+
+Pode receber:
+
+```text
+65
+```
+
+---
+
+# 🌦️ Dados meteorológicos
+
+A aplicação consulta diferentes informações fornecidas pela API OpenWeatherMap.
+
+### 🌡️ Temperatura
+
 Apresentada em graus Celsius:
+
+```text
 24.5 °C
-Sensação térmica
+```
+
+### 🌡️ Sensação térmica
+
 Indica a temperatura percebida:
+
+```text
 25.2 °C
-Umidade
+```
+
+### 💧 Umidade
+
 Apresentada em porcentagem:
+
+```text
 65 %
-Temperatura máxima e mínima
+```
+
+### 🔺 Temperatura máxima e mínima
+
 Mostra os valores máximo e mínimo informados pela API:
+
+```text
 Máxima: 28.0 °C
 Mínima: 19.0 °C
-Velocidade do vento
-Convertida para quilômetros por hora:
-15.4 km/h
-Pressão atmosférica
-Apresentada em hectopascais:
-1015 hPa
-Visibilidade
-Convertida para quilômetros:
-10.0 km
+```
 
-📊 Gráfico
-O projeto utiliza o Chart.js para apresentar os dados meteorológicos visualmente.
+### 💨 Velocidade do vento
+
+Convertida para quilômetros por hora:
+
+```text
+15.4 km/h
+```
+
+### 📊 Pressão atmosférica
+
+Apresentada em hectopascais:
+
+```text
+1015 hPa
+```
+
+### 👁️ Visibilidade
+
+Convertida para quilômetros:
+
+```text
+10.0 km
+```
+
+---
+
+# 📊 Gráfico
+
+O projeto utiliza o **Chart.js** para apresentar os dados meteorológicos visualmente.
+
 O gráfico apresenta:
-Temperatura;
-Umidade;
-Horário de cada consulta.
-O gráfico possui limite de 30 registros, evitando que uma quantidade muito grande de dados seja acumulada na interface.
-Exemplo de informações apresentadas:
+
+- Temperatura;
+- Umidade;
+- Horário de cada consulta.
+
+O gráfico possui limite de **30 registros**, evitando que uma quantidade muito grande de dados seja acumulada na interface.
+
+As informações apresentadas no gráfico são:
+
+```text
 Horário
 Temperatura (°C)
 Umidade (%)
+```
 
-📝 Histórico de consultas
+---
+
+# 📝 Histórico de consultas
+
 O sistema possui uma área de histórico que registra as consultas realizadas pelo usuário.
+
 Cada registro apresenta:
+
+```text
 Cidade - Temperatura - Umidade
-Exemplo:
+```
+
+### Exemplo:
+
+```text
 Brotas - 24.5 °C - 65%
+```
+
 As consultas mais recentes aparecem primeiro no histórico.
 
-⭐ Cidades favoritas
-O sistema permite que o usuário salve cidades como favoritas.
-Para adicionar uma cidade:
-Informe o nome da cidade;
-Selecione o país;
-Clique em Adicionar aos favoritos.
-As cidades salvas podem ser selecionadas posteriormente para realizar uma nova consulta.
-Também é possível remover uma cidade da lista de favoritas.
-As informações das cidades favoritas são armazenadas utilizando o:
-localStorage
+---
 
-🌙 Modo escuro
-A aplicação possui um modo escuro para melhorar a experiência de utilização em ambientes com pouca iluminação.
-Ao ativar o modo escuro, a página recebe a classe:
-escuro
-A preferência do usuário também é armazenada no navegador utilizando:
+# ⭐ Cidades favoritas
+
+O sistema permite que o usuário salve cidades como favoritas.
+
+Para adicionar uma cidade:
+
+1. Informe o nome da cidade;
+2. Selecione o país;
+3. Clique em **Adicionar aos favoritos**.
+
+As cidades salvas podem ser selecionadas posteriormente para realizar uma nova consulta.
+
+Também é possível remover uma cidade da lista de favoritas.
+
+As informações das cidades favoritas são armazenadas utilizando o:
+
+```javascript
 localStorage
+```
+
+---
+
+# 🌙 Modo escuro
+
+A aplicação possui um **modo escuro** para melhorar a experiência de utilização em ambientes com pouca iluminação.
+
+Ao ativar o modo escuro, a página recebe a classe:
+
+```text
+escuro
+```
+
+A preferência do usuário também é armazenada no navegador utilizando:
+
+```javascript
+localStorage
+```
+
 Dessa forma, o sistema consegue recuperar a preferência quando a página é carregada novamente.
 
-💾 Armazenamento local
-O projeto utiliza o LocalStorage do navegador para armazenar algumas informações.
+---
+
+# 💾 Armazenamento local
+
+O projeto utiliza o **LocalStorage** do navegador para armazenar algumas informações.
+
 Entre elas estão:
-Cidades favoritas;
-Preferência pelo modo escuro;
-Última cidade consultada.
+
+- Cidades favoritas;
+- Preferência pelo modo escuro;
+- Última cidade consultada.
+
 Isso permite que algumas informações sejam recuperadas mesmo depois de atualizar ou fechar a página.
 
-🔄 Funcionamento do projeto
+---
+
+# 🔄 Funcionamento do projeto
+
 O funcionamento geral pode ser representado pelo seguinte fluxo:
+
+```text
 ┌────────────────────────┐
 │        Usuário         │
 │   Informa uma cidade   │
@@ -255,81 +377,150 @@ O funcionamento geral pode ser representado pelo seguinte fluxo:
                             │      ESP32      │
                             │   Sistema IoT   │
                             └─────────────────┘
+```
 
-💻 Interface Web
+---
+
+# 💻 Interface Web
+
 A interface permite ao usuário:
-Informar uma cidade;
-Selecionar um país;
-Consultar o clima;
-Visualizar temperatura;
-Visualizar sensação térmica;
-Visualizar temperatura máxima;
-Visualizar temperatura mínima;
-Visualizar umidade;
-Visualizar velocidade do vento;
-Visualizar pressão atmosférica;
-Visualizar visibilidade;
-Acompanhar a data e horário da atualização;
-Visualizar o gráfico;
-Consultar o histórico;
-Adicionar cidades aos favoritos;
-Remover cidades favoritas;
-Ativar ou desativar o modo escuro.
 
-🚀 Como executar
-1. Baixar o projeto
+- Informar uma cidade;
+- Selecionar um país;
+- Consultar o clima;
+- Visualizar temperatura;
+- Visualizar sensação térmica;
+- Visualizar temperatura máxima;
+- Visualizar temperatura mínima;
+- Visualizar umidade;
+- Visualizar velocidade do vento;
+- Visualizar pressão atmosférica;
+- Visualizar visibilidade;
+- Acompanhar a data e horário da atualização;
+- Visualizar o gráfico;
+- Consultar o histórico;
+- Adicionar cidades aos favoritos;
+- Remover cidades favoritas;
+- Ativar ou desativar o modo escuro.
+
+---
+
+# 🚀 Como executar
+
+## 1. Baixar o projeto
+
 Clone o repositório:
-git clone https://github.com/marianaacury/Novo-sistema-de-consulta-de-clima.git
-Entre na pasta:
-cd Novo-sistema-de-consulta-de-clima
 
-2. Configurar a API Key
+```bash
+git clone https://github.com/marianaacury/Novo-sistema-de-consulta-de-clima.git
+```
+
+Entre na pasta:
+
+```bash
+cd Novo-sistema-de-consulta-de-clima
+```
+
+---
+
+## 2. Configurar a API Key
+
 Abra o arquivo JavaScript do projeto.
+
 Localize:
+
+```javascript
 const OPENWEATHER_API_KEY =
   "Colar chave aqui";
+```
+
 Substitua pelo valor da sua API Key:
+
+```javascript
 const OPENWEATHER_API_KEY =
   "SUA_CHAVE_AQUI";
+```
 
-3. Executar o projeto
+---
+
+## 3. Executar o projeto
+
 Abra o arquivo principal da aplicação em um navegador moderno.
-Também pode ser utilizado um servidor local, como o Live Server do Visual Studio Code.
 
-4. Realizar uma consulta
+Também pode ser utilizado um servidor local, como o **Live Server** do Visual Studio Code.
+
+---
+
+## 4. Realizar uma consulta
+
 Digite o nome de uma cidade.
+
 Por exemplo:
+
+```text
 Sao Paulo
+```
+
 Selecione o país:
+
+```text
 BR
+```
+
 Depois clique em:
+
+```text
 Aplicar cidade
+```
+
 A aplicação realizará a requisição para a OpenWeatherMap e exibirá os dados meteorológicos.
 
-📡 Integração com ESP32
-O projeto foi desenvolvido considerando um cenário de Internet das Coisas no qual o ESP32 pode participar da comunicação através do MQTT.
-A aplicação Web publica informações no broker HiveMQ utilizando os tópicos definidos no projeto.
-O ESP32 pode se conectar ao mesmo broker para receber ou publicar informações.
-Essa estrutura possibilita aplicações como:
-🌡️ Estações meteorológicas;
-📊 Painéis de monitoramento;
-🏠 Automação residencial;
-📡 Sistemas IoT;
-🌐 Integração entre aplicações Web e dispositivos físicos;
-🌦️ Monitoramento de condições climáticas.
+---
 
-📚 Conceitos trabalhados
-API REST
+# 📡 Integração com ESP32
+
+O projeto foi desenvolvido considerando um cenário de **Internet das Coisas (IoT)** no qual o ESP32 pode participar da comunicação através do MQTT.
+
+A aplicação Web publica informações no broker HiveMQ utilizando os tópicos definidos no projeto.
+
+O ESP32 pode se conectar ao mesmo broker para receber ou publicar informações.
+
+Essa estrutura possibilita aplicações como:
+
+- 🌡️ Estações meteorológicas;
+- 📊 Painéis de monitoramento;
+- 🏠 Automação residencial;
+- 📡 Sistemas IoT;
+- 🌐 Integração entre aplicações Web e dispositivos físicos;
+- 🌦️ Monitoramento de condições climáticas.
+
+---
+
+# 📚 Conceitos trabalhados
+
+### API REST
+
 Utilização de um serviço externo para obter informações meteorológicas através de requisições HTTP.
-JSON
+
+### JSON
+
 Os dados retornados pela API são recebidos em formato JSON e posteriormente utilizados pelo JavaScript.
-MQTT
+
+### MQTT
+
 Protocolo utilizado para comunicação baseada no modelo:
-Publish / Subscribe
-IoT
+
+**Publish / Subscribe**
+
+### IoT
+
 Integração entre aplicações Web, internet e dispositivos físicos, como o ESP32.
-JavaScript
+
+### JavaScript
+
 O projeto utiliza recursos como:
+
+```text
 fetch()
 async/await
 eventos
@@ -339,27 +530,41 @@ condições
 objetos
 arrays
 localStorage
-LocalStorage
+```
+
+### LocalStorage
+
 Utilizado para armazenar informações localmente no navegador, como cidades favoritas e preferências do usuário.
-Chart.js
+
+### Chart.js
+
 Utilizado para representar graficamente os dados de temperatura e umidade.
 
-🎓 Aplicação educacional
+---
+
+# 🎓 Aplicação educacional
+
 O projeto pode ser utilizado como atividade prática para estudar:
-Desenvolvimento Web;
-JavaScript;
-APIs REST;
-JSON;
-MQTT;
-Internet das Coisas;
-ESP32;
-Sistemas embarcados;
-Comunicação entre sistemas;
-Armazenamento local;
-Visualização de dados.
+
+- Desenvolvimento Web;
+- JavaScript;
+- APIs REST;
+- JSON;
+- MQTT;
+- Internet das Coisas;
+- ESP32;
+- Sistemas embarcados;
+- Comunicação entre sistemas;
+- Armazenamento local;
+- Visualização de dados.
+
 A atividade demonstra, na prática, como diferentes tecnologias podem trabalhar juntas em uma aplicação integrada.
 
-📁 Estrutura geral
+---
+
+# 📁 Estrutura geral
+
+```text
 Novo-sistema-de-consulta-de-clima/
 │
 ├── index.html
@@ -374,17 +579,28 @@ Novo-sistema-de-consulta-de-clima/
 │   └── arquivos relacionados ao ESP32
 │
 └── README.md
+```
 
-⚠️ Observações
-É necessário possuir uma API Key válida da OpenWeatherMap.
-A conexão MQTT depende da disponibilidade do broker HiveMQ.
-Não publique sua API Key no GitHub.
-O projeto utiliza armazenamento local do navegador para algumas funcionalidades.
-O ESP32 pode ser integrado ao sistema através dos tópicos MQTT definidos no projeto.
+---
 
-👩‍💻 Autora
-Mariana Rochiti Cury
-Projeto desenvolvido para fins educacionais, com o objetivo de praticar conceitos de Desenvolvimento Web, APIs, JavaScript, MQTT, IoT e ESP32.
+# ⚠️ Observações
 
-📄 Licença
+- É necessário possuir uma API Key válida da OpenWeatherMap.
+- A conexão MQTT depende da disponibilidade do broker HiveMQ.
+- Não publique sua API Key no GitHub.
+- O projeto utiliza armazenamento local do navegador para algumas funcionalidades.
+- O ESP32 pode ser integrado ao sistema através dos tópicos MQTT definidos no projeto.
+
+---
+
+# 👩‍💻 Autora
+
+**Mariana Rochiti Cury**
+
+Projeto desenvolvido para fins educacionais, com o objetivo de praticar conceitos de **Desenvolvimento Web, APIs, JavaScript, MQTT, IoT e ESP32**.
+
+---
+
+# 📄 Licença
+
 Projeto desenvolvido para fins educacionais.
