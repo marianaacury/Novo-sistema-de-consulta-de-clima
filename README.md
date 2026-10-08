@@ -1,49 +1,71 @@
-# 🌦️ ESP32 + MQTT + OpenWeatherMap
+# 🌦️ Sistema de Consulta de Clima
 
-Projeto desenvolvido para demonstrar a integração entre **Internet das Coisas (IoT)**, **MQTT**, **ESP32** e a **API OpenWeatherMap**, permitindo consultar dados climáticos de diferentes cidades e apresentar as informações em uma interface web.
+Projeto desenvolvido para demonstrar a integração entre **Desenvolvimento Web, API REST, MQTT, JavaScript e IoT**, utilizando a API OpenWeatherMap para consultar informações meteorológicas em tempo real e o protocolo MQTT para comunicação com dispositivos como o ESP32.
+
+A aplicação permite pesquisar diferentes cidades, visualizar informações detalhadas sobre o clima, acompanhar um histórico das consultas, salvar cidades favoritas e visualizar os dados em um gráfico.
+
+---
 
 ## 📌 Sobre o projeto
 
-A aplicação permite que o usuário informe uma cidade e um país para consultar informações meteorológicas em tempo real por meio da API do **OpenWeatherMap**.
+O sistema permite que o usuário informe uma cidade e selecione um país para realizar uma consulta meteorológica.
 
-Os principais dados obtidos são:
+Os dados são obtidos através da API **OpenWeatherMap** e apresentados diretamente na interface da aplicação.
 
-* 🌡️ Temperatura em graus Celsius;
-* 💧 Umidade relativa do ar;
-* 🌎 Cidade consultada;
-* 🕐 Horário da atualização;
-* 📊 Histórico das leituras em um gráfico.
+Entre as informações exibidas estão:
 
-Além da consulta à API, os dados são publicados utilizando o protocolo **MQTT**, permitindo que dispositivos IoT, como um **ESP32**, possam receber ou utilizar essas informações.
+- 🌡️ Temperatura atual;
+- 🌡️ Sensação térmica;
+- 🔺 Temperatura máxima;
+- 🔻 Temperatura mínima;
+- 💧 Umidade relativa do ar;
+- 💨 Velocidade do vento;
+- 📊 Pressão atmosférica;
+- 👁️ Visibilidade;
+- 🌎 Cidade consultada;
+- 🕐 Data e horário da última atualização.
+
+Além disso, o sistema possui recursos adicionais para melhorar a experiência do usuário, como **histórico de consultas, cidades favoritas e modo escuro**.
+
+---
 
 ## 🎯 Objetivo
 
-Demonstrar, de forma prática, a integração entre diferentes tecnologias utilizadas em projetos de IoT:
+O objetivo do projeto é demonstrar, de forma prática, como diferentes tecnologias podem ser integradas em uma aplicação.
 
-**Aplicação Web → OpenWeatherMap → MQTT → ESP32**
+O funcionamento principal pode ser representado por:
 
-O projeto também permite compreender conceitos como:
+**Usuário → Aplicação Web → OpenWeatherMap → Dados climáticos → MQTT → ESP32**
 
-* Consumo de APIs REST;
-* Requisições HTTP utilizando `fetch()`;
-* Comunicação MQTT;
-* Publicação e assinatura de tópicos;
-* Manipulação de dados JSON;
-* Programação JavaScript;
-* Visualização de dados;
-* Integração entre sistemas Web e dispositivos IoT.
+O projeto permite trabalhar conceitos como:
+
+- Consumo de APIs REST;
+- Requisições HTTP;
+- Manipulação de dados JSON;
+- JavaScript;
+- Programação assíncrona;
+- MQTT;
+- Comunicação Publish/Subscribe;
+- Armazenamento local no navegador;
+- Visualização de dados;
+- Integração entre Web e IoT.
+
+---
 
 ## 🛠️ Tecnologias utilizadas
 
-* HTML5
-* CSS3
-* JavaScript
-* MQTT
-* MQTT.js
-* Chart.js
-* OpenWeatherMap API
-* HiveMQ MQTT Broker
-* ESP32
+- HTML5
+- CSS3
+- JavaScript
+- MQTT
+- MQTT.js
+- Chart.js
+- OpenWeatherMap API
+- HiveMQ MQTT Broker
+- ESP32
+- LocalStorage
+
+---
 
 ## 🔗 Bibliotecas utilizadas
 
@@ -75,268 +97,294 @@ Depois, a chave deve ser configurada no código:
 const OPENWEATHER_API_KEY = "SUA_CHAVE_AQUI";
 ```
 
-### ⚠️ Importante
+🌐 OpenWeatherMap
+A aplicação utiliza a API do OpenWeatherMap para consultar os dados meteorológicos.
+É necessário possuir uma API Key para realizar as consultas.
+No código, localize:
+const OPENWEATHER_API_KEY =
+  "Colar chave aqui";
+Substitua "Colar chave aqui" pela sua chave da OpenWeatherMap.
+⚠️ Importante
+Não publique sua API Key real no GitHub.
+Para projetos públicos, recomenda-se utilizar uma variável de ambiente ou outra forma de proteção da chave.
+Caso uma chave seja publicada acidentalmente, ela deve ser substituída ou revogada no serviço correspondente.
 
-**Não publique sua API Key real no GitHub.**
-
-Para disponibilizar o projeto publicamente, recomenda-se utilizar uma variável de ambiente ou outra estratégia de proteção da chave.
-
-Se uma chave for publicada acidentalmente, ela deve ser substituída/revogada no serviço correspondente.
-
-## 📡 Comunicação MQTT
-
-O projeto utiliza o broker público da HiveMQ:
-
-```text
+📡 Comunicação MQTT
+O projeto utiliza o protocolo MQTT para realizar a comunicação entre a aplicação Web e outros dispositivos conectados ao mesmo broker.
+O broker utilizado é o:
 broker.hivemq.com
-```
-
-Para comunicação WebSocket, é utilizada a porta:
-
-```text
-8000
-```
-
-Configuração utilizada:
-
-```javascript
+A comunicação pelo WebSocket utiliza:
+ws://broker.hivemq.com:8000/mqtt
+Configuração utilizada no projeto:
 const MQTT_BROKER =
   "ws://broker.hivemq.com:8000/mqtt";
-```
 
-## 📋 Tópicos MQTT
-
-O projeto utiliza os seguintes tópicos:
-
-| Tópico                    | Função                          |
-| ------------------------- | ------------------------------- |
-| `esp32/clima/temperatura` | Publicação da temperatura       |
-| `esp32/clima/umidade`     | Publicação da umidade           |
-| `esp32/clima/cidadeAtual` | Publicação da cidade consultada |
-| `esp32/clima/cidade`      | Envio da cidade selecionada     |
-
-### Exemplo
-
-Ao consultar:
-
-```text
-Brotas,BR
-```
-
-a aplicação pode publicar:
-
-```text
+📋 Tópicos MQTT
+O sistema trabalha com os seguintes tópicos:
+Tópico
+Função
 esp32/clima/temperatura
-```
-
-com:
-
-```text
-24.5
-```
-
-E:
-
-```text
+Publicação da temperatura
 esp32/clima/umidade
-```
+Publicação da umidade
+esp32/clima/cidadeAtual
+Publicação da cidade consultada
+esp32/clima/cidade
+Envio da cidade selecionada
 
-com:
-
-```text
+Ao realizar uma consulta, a aplicação publica a temperatura, a umidade e a cidade atual no broker MQTT.
+Por exemplo:
+esp32/clima/temperatura
+Pode receber:
+24.5
+Enquanto:
+esp32/clima/umidade
+Pode receber:
 65
-```
 
-## 🔄 Funcionamento do projeto
+🌦️ Dados meteorológicos
+A aplicação consulta diferentes informações fornecidas pela API.
+Temperatura
+Apresentada em graus Celsius:
+24.5 °C
+Sensação térmica
+Indica a temperatura percebida:
+25.2 °C
+Umidade
+Apresentada em porcentagem:
+65 %
+Temperatura máxima e mínima
+Mostra os valores máximo e mínimo informados pela API:
+Máxima: 28.0 °C
+Mínima: 19.0 °C
+Velocidade do vento
+Convertida para quilômetros por hora:
+15.4 km/h
+Pressão atmosférica
+Apresentada em hectopascais:
+1015 hPa
+Visibilidade
+Convertida para quilômetros:
+10.0 km
 
-O funcionamento pode ser representado pelo seguinte fluxo:
+📊 Gráfico
+O projeto utiliza o Chart.js para apresentar os dados meteorológicos visualmente.
+O gráfico apresenta:
+Temperatura;
+Umidade;
+Horário de cada consulta.
+O gráfico possui limite de 30 registros, evitando que uma quantidade muito grande de dados seja acumulada na interface.
+Exemplo de informações apresentadas:
+Horário
+Temperatura (°C)
+Umidade (%)
 
-```text
-┌─────────────────────┐
-│     Usuário         │
-│  Escolhe a cidade   │
-└──────────┬──────────┘
-           │
-           ▼
-┌─────────────────────┐
-│   Aplicação Web     │
-│      HTML/JS        │
-└──────────┬──────────┘
-           │
-           ▼
-┌─────────────────────┐
-│   OpenWeatherMap    │
-│      API REST       │
-└──────────┬──────────┘
-           │
-           ▼
-┌─────────────────────┐
-│ Temperatura         │
-│ Umidade             │
-│ Cidade              │
-└──────────┬──────────┘
-           │
-           ▼
-┌─────────────────────┐
-│    MQTT / HiveMQ    │
-└──────────┬──────────┘
-           │
-           ▼
-┌─────────────────────┐
-│       ESP32         │
-│   Sistema IoT       │
-└─────────────────────┘
-```
+📝 Histórico de consultas
+O sistema possui uma área de histórico que registra as consultas realizadas pelo usuário.
+Cada registro apresenta:
+Cidade - Temperatura - Umidade
+Exemplo:
+Brotas - 24.5 °C - 65%
+As consultas mais recentes aparecem primeiro no histórico.
 
-## 📊 Gráfico
+⭐ Cidades favoritas
+O sistema permite que o usuário salve cidades como favoritas.
+Para adicionar uma cidade:
+Informe o nome da cidade;
+Selecione o país;
+Clique em Adicionar aos favoritos.
+As cidades salvas podem ser selecionadas posteriormente para realizar uma nova consulta.
+Também é possível remover uma cidade da lista de favoritas.
+As informações das cidades favoritas são armazenadas utilizando o:
+localStorage
 
-O projeto utiliza o **Chart.js** para apresentar graficamente os dados recebidos.
+🌙 Modo escuro
+A aplicação possui um modo escuro para melhorar a experiência de utilização em ambientes com pouca iluminação.
+Ao ativar o modo escuro, a página recebe a classe:
+escuro
+A preferência do usuário também é armazenada no navegador utilizando:
+localStorage
+Dessa forma, o sistema consegue recuperar a preferência quando a página é carregada novamente.
 
-São exibidas duas informações:
+💾 Armazenamento local
+O projeto utiliza o LocalStorage do navegador para armazenar algumas informações.
+Entre elas estão:
+Cidades favoritas;
+Preferência pelo modo escuro;
+Última cidade consultada.
+Isso permite que algumas informações sejam recuperadas mesmo depois de atualizar ou fechar a página.
 
-* Temperatura;
-* Umidade.
+🔄 Funcionamento do projeto
+O funcionamento geral pode ser representado pelo seguinte fluxo:
+┌────────────────────────┐
+│        Usuário         │
+│   Informa uma cidade   │
+└────────────┬───────────┘
+             │
+             ▼
+┌────────────────────────┐
+│     Aplicação Web      │
+│      HTML + CSS + JS   │
+└────────────┬───────────┘
+             │
+             ▼
+┌────────────────────────┐
+│    OpenWeatherMap      │
+│        API REST        │
+└────────────┬───────────┘
+             │
+             ▼
+┌────────────────────────┐
+│    Dados climáticos    │
+│ Temperatura, umidade,  │
+│ vento, pressão etc.    │
+└────────────┬───────────┘
+             │
+             ├───────────────────┐
+             │                   │
+             ▼                   ▼
+┌─────────────────────┐   ┌─────────────────────┐
+│     Interface Web   │   │    MQTT / HiveMQ    │
+│                     │   │                     │
+│ Dados + Histórico   │   │ Publicação dos      │
+│ + Gráfico           │   │ dados climáticos    │
+└─────────────────────┘   └──────────┬──────────┘
+                                     │
+                                     ▼
+                            ┌─────────────────┐
+                            │      ESP32      │
+                            │   Sistema IoT   │
+                            └─────────────────┘
 
-O gráfico mantém um histórico de até **30 pontos de leitura**, evitando que a quantidade de dados cresça indefinidamente na tela.
+💻 Interface Web
+A interface permite ao usuário:
+Informar uma cidade;
+Selecionar um país;
+Consultar o clima;
+Visualizar temperatura;
+Visualizar sensação térmica;
+Visualizar temperatura máxima;
+Visualizar temperatura mínima;
+Visualizar umidade;
+Visualizar velocidade do vento;
+Visualizar pressão atmosférica;
+Visualizar visibilidade;
+Acompanhar a data e horário da atualização;
+Visualizar o gráfico;
+Consultar o histórico;
+Adicionar cidades aos favoritos;
+Remover cidades favoritas;
+Ativar ou desativar o modo escuro.
 
-## 💻 Interface Web
-
-A interface permite:
-
-1. Informar o nome da cidade;
-2. Selecionar o país;
-3. Consultar o clima;
-4. Visualizar temperatura;
-5. Visualizar umidade;
-6. Visualizar a cidade atual;
-7. Acompanhar os dados em um gráfico;
-8. Publicar os dados utilizando MQTT.
-
-## 🚀 Como executar
-
-### 1. Baixar o projeto
-
+🚀 Como executar
+1. Baixar o projeto
 Clone o repositório:
-
-```bash
-git clone URL_DO_SEU_REPOSITORIO
-```
-
+git clone https://github.com/marianaacury/Novo-sistema-de-consulta-de-clima.git
 Entre na pasta:
+cd Novo-sistema-de-consulta-de-clima
 
-```bash
-cd nome-do-projeto
-```
-
-### 2. Configurar a API Key
-
-Abra o arquivo HTML e localize:
-
-```javascript
+2. Configurar a API Key
+Abra o arquivo JavaScript do projeto.
+Localize:
 const OPENWEATHER_API_KEY =
-  "COLE_SUA_CHAVE_AQUI";
-```
+  "Colar chave aqui";
+Substitua pelo valor da sua API Key:
+const OPENWEATHER_API_KEY =
+  "SUA_CHAVE_AQUI";
 
-Substitua pelo valor da sua chave.
+3. Executar o projeto
+Abra o arquivo principal da aplicação em um navegador moderno.
+Também pode ser utilizado um servidor local, como o Live Server do Visual Studio Code.
 
-### 3. Executar o projeto
-
-Abra o arquivo:
-
-```text
-index.html
-```
-
-em um navegador moderno.
-
-### 4. Selecionar uma cidade
-
-Digite, por exemplo:
-
-```text
+4. Realizar uma consulta
+Digite o nome de uma cidade.
+Por exemplo:
 Sao Paulo
-```
-
-Selecione:
-
-```text
+Selecione o país:
 BR
-```
+Depois clique em:
+Aplicar cidade
+A aplicação realizará a requisição para a OpenWeatherMap e exibirá os dados meteorológicos.
 
-Clique em:
+📡 Integração com ESP32
+O projeto foi desenvolvido considerando um cenário de Internet das Coisas no qual o ESP32 pode participar da comunicação através do MQTT.
+A aplicação Web publica informações no broker HiveMQ utilizando os tópicos definidos no projeto.
+O ESP32 pode se conectar ao mesmo broker para receber ou publicar informações.
+Essa estrutura possibilita aplicações como:
+🌡️ Estações meteorológicas;
+📊 Painéis de monitoramento;
+🏠 Automação residencial;
+📡 Sistemas IoT;
+🌐 Integração entre aplicações Web e dispositivos físicos;
+🌦️ Monitoramento de condições climáticas.
 
-**Aplicar cidade**
+📚 Conceitos trabalhados
+API REST
+Utilização de um serviço externo para obter informações meteorológicas através de requisições HTTP.
+JSON
+Os dados retornados pela API são recebidos em formato JSON e posteriormente utilizados pelo JavaScript.
+MQTT
+Protocolo utilizado para comunicação baseada no modelo:
+Publish / Subscribe
+IoT
+Integração entre aplicações Web, internet e dispositivos físicos, como o ESP32.
+JavaScript
+O projeto utiliza recursos como:
+fetch()
+async/await
+eventos
+DOM
+funções
+condições
+objetos
+arrays
+localStorage
+LocalStorage
+Utilizado para armazenar informações localmente no navegador, como cidades favoritas e preferências do usuário.
+Chart.js
+Utilizado para representar graficamente os dados de temperatura e umidade.
 
-A aplicação fará a consulta à API e apresentará os dados meteorológicos.
+🎓 Aplicação educacional
+O projeto pode ser utilizado como atividade prática para estudar:
+Desenvolvimento Web;
+JavaScript;
+APIs REST;
+JSON;
+MQTT;
+Internet das Coisas;
+ESP32;
+Sistemas embarcados;
+Comunicação entre sistemas;
+Armazenamento local;
+Visualização de dados.
+A atividade demonstra, na prática, como diferentes tecnologias podem trabalhar juntas em uma aplicação integrada.
 
-## 📡 Integração com ESP32
+📁 Estrutura geral
+Novo-sistema-de-consulta-de-clima/
+│
+├── index.html
+│
+├── CSS
+│   └── arquivos de estilização
+│
+├── JavaScript
+│   └── arquivos de funcionamento
+│
+├── ES32_Wifi_API aula 06
+│   └── arquivos relacionados ao ESP32
+│
+└── README.md
 
-O projeto foi desenvolvido pensando em um cenário de IoT no qual o **ESP32** pode participar da comunicação MQTT.
+⚠️ Observações
+É necessário possuir uma API Key válida da OpenWeatherMap.
+A conexão MQTT depende da disponibilidade do broker HiveMQ.
+Não publique sua API Key no GitHub.
+O projeto utiliza armazenamento local do navegador para algumas funcionalidades.
+O ESP32 pode ser integrado ao sistema através dos tópicos MQTT definidos no projeto.
 
-O navegador publica informações no broker MQTT e o ESP32 pode se conectar ao mesmo broker para receber ou publicar dados.
+👩‍💻 Autora
+Mariana Rochiti Cury
+Projeto desenvolvido para fins educacionais, com o objetivo de praticar conceitos de Desenvolvimento Web, APIs, JavaScript, MQTT, IoT e ESP32.
 
-Isso permite criar diferentes aplicações, como:
-
-* Monitoramento climático;
-* Painéis IoT;
-* Estações meteorológicas;
-* Automação residencial;
-* Sistemas de monitoramento;
-* Integração entre sensores e aplicações Web.
-
-## 📚 Conceitos trabalhados
-
-Este projeto pode ser utilizado como atividade prática para estudar:
-
-### API REST
-
-Consumo de serviços externos por meio de requisições HTTP.
-
-### JSON
-
-Manipulação dos dados retornados pela API.
-
-### MQTT
-
-Comunicação baseada em publicação e assinatura (`Publish/Subscribe`).
-
-### IoT
-
-Integração entre software, internet e dispositivos físicos.
-
-### JavaScript
-
-Utilização de:
-
-* `fetch()`;
-* `async/await`;
-* Eventos;
-* DOM;
-* Funções;
-* Condições;
-* Manipulação de dados.
-
-### Visualização de dados
-
-Utilização do Chart.js para representar informações de sensores ou serviços externos em gráficos.
-
-## 🎓 Aplicação educacional
-
-O projeto pode ser utilizado em aulas de:
-
-* Desenvolvimento de Sistemas;
-* Programação Web;
-* Internet das Coisas;
-* APIs;
-* JavaScript;
-* MQTT;
-* Sistemas embarcados;
-* Integração de sistemas.
-
-A atividade permite que os alunos visualizem na prática como diferentes tecnologias podem trabalhar de forma integrada em um projeto de IoT.
-
-## 👨‍💻 Autor
-
-**Robson Lourenço**
-
-Projeto desenvolvido para fins educacionais e de aprendizagem em **Desenvolvimento de Sistemas, IoT, APIs e MQTT**.
+📄 Licença
+Projeto desenvolvido para fins educacionais.
