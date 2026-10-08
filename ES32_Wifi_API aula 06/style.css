@@ -1,9 +1,49 @@
-   body {
-      font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-      background: #01243b;
-      padding: 24px;
-      margin: 0;
-    }
+
+body {
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  background: #01243b;
+  padding: 80px 24px 24px;
+  margin: 0;
+}
+
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: #05295f;
+  color: white;
+  height: 58px;
+  border-top: 4px solid #05295f;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-content {
+  width: 100%;
+  max-width: 920px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 16px;
+}
+
+.logo {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+}
+
+header h1 {
+  margin: 0;
+  font-size: clamp(1.1rem, 2vw, 1.6rem);
+  line-height: 1;
+}
+
 
     h2 {
       margin: 0 0 12px;
@@ -133,6 +173,10 @@
 
     @media (max-width: 600px) {
       body {
+        padding: 70px 10px 10px;
+      }
+
+      .navbar-brand {
         padding: 10px;
       }
 
@@ -146,4 +190,10 @@
       .row button {
         width: 100%;
       }
+    }
+
+    footer p {
+      text-align: center;
+      color: white;
+      margin-top: 20px;
     }
