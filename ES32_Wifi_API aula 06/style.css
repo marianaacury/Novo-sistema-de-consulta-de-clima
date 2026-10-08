@@ -1,0 +1,149 @@
+   body {
+      font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+      background: #01243b;
+      padding: 24px;
+      margin: 0;
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      color: #115385;
+    }
+
+    p {
+      color: #09314f;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 20px;
+      max-width: 900px;
+      margin: 0 auto 16px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    }
+
+    .row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .row input,
+    .row select,
+    .row button {
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+    }
+
+    .row input {
+      flex: 1;
+      min-width: 180px;
+    }
+
+    .row button {
+      cursor: pointer;
+      background: #115385;
+      color: white;
+      font-weight: bold;
+      border: none;
+    }
+
+    .row button:hover {
+      background: #294b8f;
+    }
+
+    .vals {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+
+    .info {
+      background: #ebf6ff;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+      color: #09314f;
+    }
+
+    .info b {
+      display: block;
+      font-size: 1.4rem;
+      margin-top: 5px;
+    }
+
+    
+
+    #chart {
+      max-width: 900px;
+      margin: 16px auto;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 5px 10px;
+      background: #ebf6ff;
+      border-radius: 999px;
+      font-size: 0.9rem;
+    }
+
+    #mensagem {
+      margin-top: 12px;
+      font-size: 0.95rem;
+      font-weight: bold;
+    }
+
+    #carregando {
+      display: none;
+      margin-top: 12px;
+      color: #3e66b7;
+      font-weight: bold;
+    }
+
+    .historico-item {
+      padding: 8px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    footer {
+      text-align: center;
+      color: white;
+      margin-top: 20px;
+    }
+
+    /* MODO ESCURO */
+
+    body.escuro {
+      background: #1e1e1e;
+      color: white;
+    }
+
+    body.escuro .card {
+      background: #2d2d2d;
+    }
+
+    body.escuro .info {
+      background: #444;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+
+      .row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .row input,
+      .row select,
+      .row button {
+        width: 100%;
+      }
+    }
